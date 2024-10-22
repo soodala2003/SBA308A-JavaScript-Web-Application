@@ -59,6 +59,7 @@ function createCarousel() {
 getFavouritesBtn.addEventListener("click", function() {
     const selectedBreedVal = breedSelect.value;
     const selectedBreedIndex = breedSelect.selectedIndex;
+    console.log(selectedBreedIndex);
 
     let selectedBreed = storedBreeds[selectedBreedIndex]; 
     console.log(selectedBreed.name);
