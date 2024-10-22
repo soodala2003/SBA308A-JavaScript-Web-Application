@@ -1,4 +1,4 @@
-//import axios from "axios";
+import * as Carousel from "./Modules/Carousel.js";
 
 const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
@@ -33,12 +33,28 @@ async function initialLoad() {
       option.innerHTML = `${breed.name}`;
       breedSelect.appendChild(option);
     }
+    createCarousel();
     // Reset the select element
     breedSelect.selectedIndex = -1;
 }
 
 initialLoad();
 console.log(storedBreeds.length);
+
+const carousel = document.getElementById("carouselInner");
+
+// Create the initial carousel.
+function createCarousel() {
+    for (let i = 0; i < storedBreeds.length; i++) {
+        let breed = storedBreeds[i];
+        let carouselEl = document.createElement("div");
+      
+        carouselEl.setAttribute("id", `${breed.id}`);
+        carouselEl.setAttribute("class", "carousel-item");
+        carouselEl.textContent = `${breed.name}`;
+        carousel.appendChild(carouselEl);
+  }
+}
 
 getFavouritesBtn.addEventListener("click", function() {
     const selectedBreedVal = breedSelect.value;
@@ -48,4 +64,7 @@ getFavouritesBtn.addEventListener("click", function() {
     console.log(selectedBreed.name);
     let carouselElement = document.getElementById(`${selectedBreedVal}`);
 
+    carouselElement.setAttribute("class", "carousel-item active");
+    Carousel.appendCarousel(carouselElement);
 });
+
