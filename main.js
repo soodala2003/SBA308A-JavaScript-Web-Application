@@ -3,6 +3,8 @@ import * as Carousel from "./Modules/Carousel.js";
 const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
+const carousel = document.getElementById("carouselInner");
+const h4 = document.querySelector("h4");
 
 const API_KEY =
   "live_2L5qpy6HjWEc4qxT1JVDCifdbhbUKnvSXv3S5Awwj7ygiHvXZgwvqCPjpaBr0tvS";
@@ -41,8 +43,6 @@ async function initialLoad() {
 initialLoad();
 console.log(storedBreeds.length);
 
-const carousel = document.getElementById("carouselInner");
-
 // Create the initial carousel.
 function createCarousel() {
     for (let i = 0; i < storedBreeds.length; i++) {
@@ -53,12 +53,13 @@ function createCarousel() {
         carouselEl.setAttribute("class", "carousel-item");
         carouselEl.textContent = `${breed.name}`;
         carousel.appendChild(carouselEl);
-  }
+    }
 }
 
 getFavouritesBtn.addEventListener("click", function() {
     const selectedBreedVal = breedSelect.value;
     const selectedBreedIndex = breedSelect.selectedIndex;
+    console.log(selectedBreedVal);
     console.log(selectedBreedIndex);
 
     let selectedBreed = storedBreeds[selectedBreedIndex]; 
@@ -67,5 +68,11 @@ getFavouritesBtn.addEventListener("click", function() {
 
     carouselElement.setAttribute("class", "carousel-item active");
     Carousel.appendCarousel(carouselElement);
+    h4.innerHTML = selectedBreed.name;
+
+    let infoLists = document.createElement("div");
+    infoLists.innerHTML = `<p>Description: ${selectedBreed.description}</p>`;
+    h4.appendChild(infoLists);
+
 });
 
