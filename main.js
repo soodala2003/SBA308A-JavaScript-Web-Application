@@ -1,3 +1,4 @@
+import { applyStyles } from "@popperjs/core/index.js";
 import * as Carousel from "./Modules/Carousel.js";
 
 const breedSelect = document.getElementById("breedSelect");
@@ -66,8 +67,8 @@ function createCarousel() {
         let carouselEl = document.createElement("div");
       
         carouselEl.setAttribute("id", `${breed.id}`);
-        carouselEl.setAttribute("class", "carousel-item");
-        carouselEl.textContent = `${breed.name}`;
+        //carouselEl.setAttribute("class", "carousel-item");
+        //carouselEl.textContent = `${breed.name}`;
         carousel.appendChild(carouselEl);
     }
 }
@@ -82,9 +83,15 @@ getFavouritesBtn.addEventListener("click", function() {
     console.log(selectedBreed.name);
     let carouselElement = document.getElementById(`${selectedBreedId}`);
 
-    carouselElement.setAttribute("class", "carousel-item active");
-    Carousel.appendCarousel(carouselElement);
-
+    //carouselElement.setAttribute("class", "carousel-item active");
+    //Carousel.appendCarousel(carouselElement);
+    /* let img = document.createElement("img");
+    img.setAttribute("class", "d-block w-100");
+    img.src = selectedBreed.image.url;
+    img.alt = selectedBreed.name;
+    carouselElement.appendChild(img); 
+    cloneParentDiv.insertBefore(carouselElement, cloneParentDiv.firstChild); */
+    
     h6.innerHTML = selectedBreed.name;
     h6.appendChild(ul);
     li1.innerHTML = `<p>Description: ${selectedBreed.description}</p>`;
@@ -99,10 +106,9 @@ getFavouritesBtn.addEventListener("click", function() {
     let imgSrc = selectedBreed.image.url;
     let imgAlt = selectedBreed.name;
     let imgId = selectedBreed.image.id;
+
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
     cloneParentDiv.insertBefore(clone,cloneParentDiv.firstChild);
-
-
 
     // Reset the select element
     breedSelect.selectedIndex = -1;
@@ -112,10 +118,39 @@ getFavouritesBtn.addEventListener("click", function() {
     h6.appendChild(infoLists); */
 });
 
-export async function favourite(imgId) {
-    const apiUrl = "https://api.thecatapi.com/v1/favourites";
+export async function voteImage(imgId, vote) {
+    const apiUrl = `https://api.thecatapi.com/v1/votes/`;
+    try {
+        const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ imgId, vote })
+        });
+        if (!response.ok) {
+            throw new Error("Network response was not ok");
+        }
 
-
-    
+        const data = await response.json();
+        console.log("Vote successful:", data);
+    } catch(error) {
+        console.log("Error voting:", error);
+    }  
 }
 
+
+
+/*export async function favourite(imgId) { 
+     const apiUrl = "https://api.thecatapi.com/v1/favourites";
+
+    axios.post(apiUrl, 
+        {headers: {"x-api-key": API_KEY}},
+        {data: {"image_id": imgId}}
+    ).then(response => {
+        console.log('Cat added to favorites:', response.data);
+    }).catch(error => {
+        console.error("Error:", error);
+    });   
+}
+*/
