@@ -1,4 +1,5 @@
-import { voteImage } from "./main.js";
+//import { voteImage } from "./main.js";
+import { favourite } from "./main.js";
 
 export function createCarouselItem(imgSrc, imgAlt, imgId) {
     const template = document.querySelector("#carouselItemTemplate");
@@ -10,8 +11,8 @@ export function createCarouselItem(imgSrc, imgAlt, imgId) {
   
     const favBtn = clone.querySelector(".favourite-button");
     favBtn.addEventListener("click", () => {
-        voteImage(imgId, vote)
-        //favourite(imgId);
+        //voteImage(imgId, vote)
+        favourite(imgId);
     });
   
     return clone;

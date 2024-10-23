@@ -1,5 +1,4 @@
-import { applyStyles } from "@popperjs/core/index.js";
-import * as Carousel from "./Modules/Carousel.js";
+import * as Carousel from "./Carousel.js";
 
 const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
@@ -85,12 +84,12 @@ getFavouritesBtn.addEventListener("click", function() {
 
     //carouselElement.setAttribute("class", "carousel-item active");
     //Carousel.appendCarousel(carouselElement);
-    /* let img = document.createElement("img");
+    let img = document.createElement("img");
     img.setAttribute("class", "d-block w-100");
     img.src = selectedBreed.image.url;
     img.alt = selectedBreed.name;
     carouselElement.appendChild(img); 
-    cloneParentDiv.insertBefore(carouselElement, cloneParentDiv.firstChild); */
+    cloneParentDiv.insertBefore(carouselElement, cloneParentDiv.firstChild); 
     
     h6.innerHTML = selectedBreed.name;
     h6.appendChild(ul);
@@ -108,8 +107,9 @@ getFavouritesBtn.addEventListener("click", function() {
     let imgId = selectedBreed.image.id;
 
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
-    cloneParentDiv.insertBefore(clone,cloneParentDiv.firstChild);
-
+    //cloneParentDiv.insertBefore(clone, cloneParentDiv.firstChild);
+    //carousel.insertBefore(clone, carousel.firstChild);
+    Carousel.appendCarousel(clone);
     // Reset the select element
     breedSelect.selectedIndex = -1;
 
@@ -118,7 +118,7 @@ getFavouritesBtn.addEventListener("click", function() {
     h6.appendChild(infoLists); */
 });
 
-export async function voteImage(imgId, vote) {
+/* export async function voteImage(imgId) {
     const apiUrl = `https://api.thecatapi.com/v1/votes/`;
     try {
         const response = await fetch(apiUrl, {
@@ -137,14 +137,31 @@ export async function voteImage(imgId, vote) {
     } catch(error) {
         console.log("Error voting:", error);
     }  
+} */
+
+
+
+export async function favourite(imgId) { 
+    const apiUrl = "https://api.thecatapi.com/v1/favourites";
+
+    fetch(apiUrl, {
+        method: "POST",
+        headers: {
+            "Cotent-Type": "application/json",
+            "x-api-key": API_KEY
+            },
+            body: JSON.stringify({ "imageId": imgId })
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error("Failed to favorite image");
+            }
+            // Update UI to reflect the favorited state
+        }).catch(error => {
+            console.error('Error:', error);
+    });
 }
-
-
-
-/*export async function favourite(imgId) { 
-     const apiUrl = "https://api.thecatapi.com/v1/favourites";
-
-    axios.post(apiUrl, 
+    
+    /* axios.post(apiUrl, 
         {headers: {"x-api-key": API_KEY}},
         {data: {"image_id": imgId}}
     ).then(response => {
@@ -153,4 +170,5 @@ export async function voteImage(imgId, vote) {
         console.error("Error:", error);
     });   
 }
-*/
+
+ */
