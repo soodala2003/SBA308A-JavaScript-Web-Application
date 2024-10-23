@@ -6,7 +6,7 @@ const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 const carousel = document.getElementById("carouselInner");
 //const parentEl = document.getElementById("carouselInner");
 const h6 = document.querySelector("h6");
-const cloneParentDiv = document.getElementById("clone");
+const cloneDiv = document.getElementById("clone");
 
 const ul = document.createElement("ul");
 const li1 = document.createElement("li");
@@ -24,10 +24,11 @@ ul.appendChild(li5);
 
 const API_KEY =
     "live_2L5qpy6HjWEc4qxT1JVDCifdbhbUKnvSXv3S5Awwj7ygiHvXZgwvqCPjpaBr0tvS";
-const URL = "https://api.thecatapi.com/v1/breeds";
+
 let storedBreeds = [];
 
 async function initialLoad() {
+    const URL = "https://api.thecatapi.com/v1/breeds";
     try {
         const response = await fetch(URL, {headers: {
             "x-api-key": API_KEY
@@ -86,10 +87,22 @@ getFavouritesBtn.addEventListener("click", function() {
     //Carousel.appendCarousel(carouselElement);
     let img = document.createElement("img");
     img.setAttribute("class", "d-block w-100");
+    img.style.maxWidth = "50%";
     img.src = selectedBreed.image.url;
     img.alt = selectedBreed.name;
     carouselElement.appendChild(img); 
-    cloneParentDiv.insertBefore(carouselElement, cloneParentDiv.firstChild); 
+    console.log(cloneDiv.firstElementChild);
+
+    if (cloneDiv.firstElementChild === infoDump) {
+        cloneDiv.insertBefore(carouselElement, cloneDiv.firstElementChild);
+        console.log(cloneDiv); 
+    } else {
+        cloneDiv.removeChild(cloneDiv.firstElementChild);
+        cloneDiv.insertBefore(carouselElement, cloneDiv.firstElementChild);
+        //let child = cloneDiv.firstElementChild;
+        //console.log(child.nextElementSibling);
+    } 
+    
     
     h6.innerHTML = selectedBreed.name;
     h6.appendChild(ul);
