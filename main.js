@@ -4,8 +4,9 @@ const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 const carousel = document.getElementById("carouselInner");
-const parentEl = document.getElementById("carouselInner");
+//const parentEl = document.getElementById("carouselInner");
 const h6 = document.querySelector("h6");
+const cloneParentDiv = document.getElementById("clone");
 
 const ul = document.createElement("ul");
 const li1 = document.createElement("li");
@@ -95,12 +96,26 @@ getFavouritesBtn.addEventListener("click", function() {
     wikiLink.textContent = `${selectedBreed.wikipedia_url}`;
     li5.appendChild(wikiLink);
 
+    let imgSrc = selectedBreed.image.url;
+    let imgAlt = selectedBreed.name;
+    let imgId = selectedBreed.image.id;
+    let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
+    cloneParentDiv.insertBefore(clone,cloneParentDiv.firstChild);
+
+
+
     // Reset the select element
     breedSelect.selectedIndex = -1;
 
     /* let infoLists = document.createElement("div");
     infoLists.innerHTML = `<p>Description: ${selectedBreed.description}</p>`;
     h6.appendChild(infoLists); */
-
 });
+
+export async function favourite(imgId) {
+    const apiUrl = "https://api.thecatapi.com/v1/favourites";
+
+
+    
+}
 
