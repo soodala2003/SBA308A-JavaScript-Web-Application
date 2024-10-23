@@ -1,3 +1,5 @@
+import { voteImage } from "./main.js";
+
 export function createCarouselItem(imgSrc, imgAlt, imgId) {
     const template = document.querySelector("#carouselItemTemplate");
     const clone = template.content.firstElementChild.cloneNode(true);
