@@ -24,11 +24,11 @@ ul.appendChild(li5);
 
 const API_KEY =
     "live_2L5qpy6HjWEc4qxT1JVDCifdbhbUKnvSXv3S5Awwj7ygiHvXZgwvqCPjpaBr0tvS";
-
+const API_URL = `https://api.thecatapi.com/v1/`;
 let storedBreeds = [];
 
 async function initialLoad() {
-    const URL = "https://api.thecatapi.com/v1/breeds";
+    const URL = `${API_URL}breeds`;
     try {
         const response = await fetch(URL, {headers: {
             "x-api-key": API_KEY
@@ -82,8 +82,10 @@ getFavouritesBtn.addEventListener("click", function(e) {
 
     let selectedBreed = storedBreeds[selectedBreedIndex]; 
     console.log(selectedBreed.id);
+    console.log(selectedBreedId);
     //let carouselElement = document.getElementById(`${selectedBreedId}`);
     let selectedImg = document.createElement("div");
+    selectedImg.setAttribute("id", selectedBreedId);
 
     //carouselElement.setAttribute("class", "carousel-item active");
     //Carousel.appendCarousel(carouselElement);
@@ -114,14 +116,17 @@ getFavouritesBtn.addEventListener("click", function(e) {
     wikiLink.textContent = `${selectedBreed.wikipedia_url}`;
     li5.appendChild(wikiLink);
 
-    
-
-    /* let imgSrc = selectedBreed.image.url;
-    let imgAlt = selectedBreed.name;
     let imgId = selectedBreed.image.id;
+    let vote = "";
+
+    voteImage(imgId, vote);
+
+    let imgSrc = selectedBreed.image.url;
+    let imgAlt = selectedBreed.name;
+    //let imgId = selectedBreed.image.id;
 
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
-    Carousel.appendCarousel(clone); */
+    Carousel.appendCarousel(clone); 
 
     //cloneParentDiv.insertBefore(clone, cloneParentDiv.firstChild);
     //carousel.insertBefore(clone, carousel.firstChild);
@@ -134,46 +139,59 @@ getFavouritesBtn.addEventListener("click", function(e) {
     h6.appendChild(infoLists); */
 });
 
-/* export async function voteImage(imgId) {
-    const apiUrl = `https://api.thecatapi.com/v1/votes/`;
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ imgId, vote })
-        });
+export async function voteImage(imgId, vote) {
+    const URL = `${API_URL}votes/`;
+    const body = {
+        "image_id": imgId,
+        "sub_id": "user-99",
+        "value": vote 
+    };
+    
+    fetch(URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY
+        },
+        body: JSON.stringify(body)
+    }).then(response => {
         if (!response.ok) {
-            throw new Error("Network response was not ok");
+            throw new Error("Failed to favorite image");
         }
+        // Update UI to reflect the favorited state
+        return response.json();
+    }).then(data => {
+        alert(data.message);
+        console.log(data)
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}
 
-        const data = await response.json();
-        console.log("Vote successful:", data);
-    } catch(error) {
-        console.log("Error voting:", error);
-    }  
-} */
-
-
+//showVoteOptions();
 
 export async function favourite(imgId) { 
-    const apiUrl = "https://api.thecatapi.com/v1/favourites";
+    const URL = `${API_URL}favourites/`;
+    const body = {
+        "image_id": imgId,
+        "sub_id": "user-99",
+    };
 
-    fetch(apiUrl, {
+    fetch(URL, {
         method: "POST",
         headers: {
             "Cotent-Type": "application/json",
             "x-api-key": API_KEY
-            },
-            body: JSON.stringify({ "imageId": imgId })
-        }).then(response => {
-            if (!response.ok) {
-                throw new Error("Failed to favorite image");
-            }
-            // Update UI to reflect the favorited state
-        }).catch(error => {
-            console.error('Error:', error);
+        }, 
+        body: JSON.stringify(body)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to favorite image");
+        }
+        // Update UI to reflect the favorited state
+        console.log(response.json());
+    }).catch(error => {
+        console.error('Error:', error);
     });
 }
     
