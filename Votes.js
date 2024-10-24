@@ -1,22 +1,30 @@
-import { voteImage } from "./main.js";
+//import { vote } from "./main.js";
 
-export async function getVotesByUserId(userId) {
-    const URL = `${API_URL}votes?sub_id=${userId}`;
-    try {
-        const response = await fetch(URL);
-
-        /* {
-            headers: {"x-api-key": API_KEY,
-                "Cotent-Type": "application/json"
-            }
-        }); */
-
+export async function voteImage(imgId, subId, vote) {
+    const URL = `${API_URL}votes/`;
+    const body = {
+        "image_id": imgId,
+        "sub_id": subId,
+        "value": vote 
+    };
+    
+    fetch(URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY
+        },
+        body: JSON.stringify(body)
+    }).then(response => {
         if (!response.ok) {
-            throw new Error(`Network response was not ok: ${response.status}`);
+            throw new Error("Failed to favorite image");
         }
-        const votes = await response.json();
-        return votes;
-    } catch (error) {
-        console.log("Error fetching votes:", error);
-    }
+        
+        return response.json();
+    }).then(data => {
+        alert(data.message);
+        console.log(data)
+    }).catch(error => {
+        console.error('Error:', error);
+    });
 }

@@ -1,4 +1,5 @@
 import * as Carousel from "./Carousel.js";
+import * as Votes from "./Votes.js";
 
 const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
@@ -25,6 +26,7 @@ ul.appendChild(li5);
 const API_KEY =
     "live_2L5qpy6HjWEc4qxT1JVDCifdbhbUKnvSXv3S5Awwj7ygiHvXZgwvqCPjpaBr0tvS";
 const API_URL = `https://api.thecatapi.com/v1/`;
+const userId = "user-99";
 let storedBreeds = [];
 
 async function initialLoad() {
@@ -118,8 +120,9 @@ getFavouritesBtn.addEventListener("click", function(e) {
 
     let imgId = selectedBreed.image.id;
     let vote = "";
+    let subId = userId;
 
-    voteImage(imgId, vote);
+    //voteImage(imgId, subId, vote);
 
     let imgSrc = selectedBreed.image.url;
     let imgAlt = selectedBreed.name;
@@ -127,24 +130,27 @@ getFavouritesBtn.addEventListener("click", function(e) {
 
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
     Carousel.appendCarousel(clone); 
-
     //cloneParentDiv.insertBefore(clone, cloneParentDiv.firstChild);
     //carousel.insertBefore(clone, carousel.firstChild);
    
     // Reset the select element
     breedSelect.selectedIndex = -1;
-
-    /* let infoLists = document.createElement("div");
-    infoLists.innerHTML = `<p>Description: ${selectedBreed.description}</p>`;
-    h6.appendChild(infoLists); */
 });
 
-export async function voteImage(imgId, vote) {
+//export async function voteImage(imgId, subId, vote) {
+export async function votes() {
+    let vote = 0;
+    if (document.getElementById("btn1"),clicked === true) {
+        vote = 1;
+    } else if (document.getElementById("btn2"),clicked === true) {
+        vote = -1;
+    }
+
     const URL = `${API_URL}votes/`;
     const body = {
-        "image_id": imgId,
-        "sub_id": "user-99",
-        "value": vote 
+        "image_id": imgId, //selectedBreed.image.id
+        "sub_id": subId,   //userId
+        "value": vote      
     };
     
     fetch(URL, {
@@ -166,9 +172,37 @@ export async function voteImage(imgId, vote) {
     }).catch(error => {
         console.error('Error:', error);
     });
+} 
+
+// Request to get the votes by 'sub_id'(User)
+async function getVotesByUserId(subId) {
+    const URL = `${API_URL}votes?sub_id=${subId}`;
+    try {
+        const response = await fetch(URL, {
+            headers: {"x-api-key": API_KEY,
+                "Cotent-Type": "application/json"
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error(`Network response was not ok: ${response.status}`);
+        }
+        const votes = await response.json();
+        return votes;
+    } catch (error) {
+        console.log("Error fetching votes:", error);
+    }
 }
 
-//showVoteOptions();
+getVotesByUserId(userId)
+    .then(votes => {
+        // Process the retrieved votes
+        console.log(`Votes for user, ${userId}: ${votes}`);
+    }).catch(error => {
+        console.error(error);
+    });
+
+console.log(getVotesByUserId(userId));  //pending
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;
