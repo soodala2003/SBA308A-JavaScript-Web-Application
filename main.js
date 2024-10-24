@@ -118,15 +118,13 @@ getFavouritesBtn.addEventListener("click", function(e) {
     wikiLink.textContent = `${selectedBreed.wikipedia_url}`;
     li5.appendChild(wikiLink);
 
-    let imgId = selectedBreed.image.id;
-    let vote = "";
     let subId = userId;
-
-    //voteImage(imgId, subId, vote);
-
+    let imgId = selectedBreed.image.id;
     let imgSrc = selectedBreed.image.url;
     let imgAlt = selectedBreed.name;
-    //let imgId = selectedBreed.image.id;
+    
+    //voteImage(imgId, subId, vote);
+    voteImage(imgId, subId);
 
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
     Carousel.appendCarousel(clone); 
@@ -137,16 +135,39 @@ getFavouritesBtn.addEventListener("click", function(e) {
     breedSelect.selectedIndex = -1;
 });
 
-//export async function voteImage(imgId, subId, vote) {
-export async function votes() {
-    let vote = 0;
-    if (document.getElementById("btn1"),clicked === true) {
-        vote = 1;
-    } else if (document.getElementById("btn2"),clicked === true) {
-        vote = -1;
-    }
+async function voteImage(imgId, subId) {
 
     const URL = `${API_URL}votes/`;
+    const body = {
+        "image_id": imgId,
+        "sub_id": subId,
+        "value": 1
+    };
+    
+    fetch(URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY
+        },
+        body: JSON.stringify(body)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to vote image");
+        }
+        
+        return response.json();
+    }).then(data => {
+        alert(data.message);
+        console.log(data)
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}
+//export async function voteImage(imgId, subId, vote) {
+    
+
+    /* const URL = `${API_URL}votes/`;
     const body = {
         "image_id": imgId, //selectedBreed.image.id
         "sub_id": subId,   //userId
@@ -172,7 +193,7 @@ export async function votes() {
     }).catch(error => {
         console.error('Error:', error);
     });
-} 
+}  */
 
 // Request to get the votes by 'sub_id'(User)
 async function getVotesByUserId(subId) {
