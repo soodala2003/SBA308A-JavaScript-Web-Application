@@ -27,11 +27,15 @@ export function clear() {
   
 export function appendCarousel(element) {
     const carousel = document.querySelector("#carouselInner");
-  
-    const activeItem = document.querySelector(".carousel-item.active");
-    if (!activeItem) element.classList.add("active");
-  
-    carousel.appendChild(element);
+    //const activeItem = document.querySelector(".carousel-item.active");
+    //if (!activeItem) element.classList.add("active");
+   
+    if (!carousel.firstElementChild) {
+        carousel.appendChild(element);
+    } else {
+        clear();
+        carousel.appendChild(element);
+    }    
 }
   
 export function start() {

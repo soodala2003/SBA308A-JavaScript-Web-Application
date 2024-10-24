@@ -7,7 +7,7 @@ const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 const carousel = document.getElementById("carouselInner");
 //const parentEl = document.getElementById("carouselInner");
 const h6 = document.querySelector("h6");
-const cloneDiv = document.getElementById("clone");
+const cloneDiv = document.getElementById("clone-div");
 
 const ul = document.createElement("ul");
 const li1 = document.createElement("li");
@@ -54,7 +54,7 @@ async function initialLoad() {
     } catch (errors) {
         console.log(errors);
     }   
-    createCarousel();
+    //createCarousel();
     // Reset the select element
     breedSelect.selectedIndex = -1;
 }
@@ -79,34 +79,11 @@ getFavouritesBtn.addEventListener("click", function(e) {
     e.preventDefault();
     const selectedBreedId = breedSelect.value;
     const selectedBreedIndex = breedSelect.selectedIndex;
-    //console.log(selectedBreedId);
-    //console.log(selectedBreedIndex);
 
     let selectedBreed = storedBreeds[selectedBreedIndex]; 
     console.log(selectedBreed.id);
     console.log(selectedBreedId);
-    //let carouselElement = document.getElementById(`${selectedBreedId}`);
-    let selectedImg = document.createElement("div");
-    selectedImg.setAttribute("id", selectedBreedId);
-
-    //carouselElement.setAttribute("class", "carousel-item active");
-    //Carousel.appendCarousel(carouselElement);
-    let img = document.createElement("img");
-    img.setAttribute("class", "d-block w-100 center");
-    //img.style.maxWidth = "50%";
-    img.src = selectedBreed.image.url;
-    img.alt = selectedBreed.name;
-    selectedImg.appendChild(img); 
-    //console.log(cloneDiv.firstElementChild);
-
-    if (cloneDiv.firstElementChild === infoDump) {
-        cloneDiv.insertBefore(selectedImg, cloneDiv.firstElementChild);
-        //console.log(cloneDiv); 
-    } else {
-        cloneDiv.removeChild(cloneDiv.firstElementChild);
-        cloneDiv.insertBefore(selectedImg, cloneDiv.firstElementChild);
-    }
-
+    
     h6.innerHTML = selectedBreed.name;
     h6.appendChild(ul);
     li1.innerHTML = `<p>Description: ${selectedBreed.description}</p>`;
@@ -118,16 +95,38 @@ getFavouritesBtn.addEventListener("click", function(e) {
     wikiLink.textContent = `${selectedBreed.wikipedia_url}`;
     li5.appendChild(wikiLink);
 
+    //let selectedImg = document.createElement("div");
+    //selectedImg.setAttribute("id", selectedBreedId);
+
+    //carouselElement.setAttribute("class", "carousel-item active");
+    //Carousel.appendCarousel(carouselElement);
+    //let img = document.createElement("img");
+    //img.setAttribute("class", "d-block w-100 center");
+    //img.style.maxWidth = "50%";
+    //img.src = selectedBreed.image.url;
+    //img.alt = selectedBreed.name;
+    //selectedImg.appendChild(img); 
+    //console.log(cloneDiv.firstElementChild);
+
     let subId = userId;
     let imgId = selectedBreed.image.id;
     let imgSrc = selectedBreed.image.url;
     let imgAlt = selectedBreed.name;
     
-    //voteImage(imgId, subId, vote);
-    voteImage(imgId, subId);
-
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
     Carousel.appendCarousel(clone); 
+
+    //voteImage(imgId, subId, vote);
+    //voteImage(imgId, subId);
+    /* if (cloneDiv.firstElementChild === infoDump) {
+        cloneDiv.insertBefore(clone, cloneDiv.firstElementChild);
+        //console.log(cloneDiv); 
+    } else {
+        cloneDiv.removeChild(cloneDiv.firstElementChild);
+        cloneDiv.insertBefore(clone, cloneDiv.firstElementChild);
+    }  */
+    
+    
     //cloneParentDiv.insertBefore(clone, cloneParentDiv.firstChild);
     //carousel.insertBefore(clone, carousel.firstChild);
    
