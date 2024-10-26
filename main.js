@@ -75,8 +75,23 @@ function createCarousel() {
     }
 }
 
+function clear(elementId) {
+    const element = document.getElementById(elementId);
+    //const grid = document.querySelector("#grid");
+    while (element.firstChild) {
+        element.removeChild(element.firstChild);
+    }
+}
+
 getFavouritesBtn.addEventListener("click", function(e) {
     e.preventDefault();
+
+    const element = "grid";//document.getElementById("grid");
+    clear(element);
+
+    document.getElementById("main-div").style.visibility = "visible";
+    //document.getElementById("grid").style.visibility = "hidden";
+
     const selectedBreedId = breedSelect.value;
     const selectedBreedIndex = breedSelect.selectedIndex;
 

@@ -14,20 +14,29 @@ export async function voteImage(imgId, subId) {
     });
 
     resultsBtn.addEventListener("click", () => {
-        document.getElementById("main-div").style.display = "none";
+        document.getElementById("main-div").style.visibility = "hidden";
         document.getElementById("vote-options").style.display = "block";
-        //let results = 
+        
         getVotesByUserId(subId).then((data) => {
             data.map(function(voteData) {
                 const imageData = voteData.image;
                 let image = document.createElement("img");
+                image.style.width = "250px";
+                image.style.height = "200px";
+                image.style.padding = "10px";
                 image.src = imageData.url;
 
                 let gridCell = document.createElement("div");
+                gridCell.style.width = "270px";
+                gridCell.style.height = "220px";
+                gridCell.style.margin = "20px";
+
                 if (voteData.value < 0) {
                     gridCell.classList.add("red");
+                    
                 } else {
                     gridCell.classList.add("green");
+                    gridCell.style.backgroundColor = "rgb(179, 244, 207)";
                 }
 
                 gridCell.classList.add("col-lg");
@@ -38,6 +47,4 @@ export async function voteImage(imgId, subId) {
             console.log(error);
         });
     });
-
-    //return vote;
 }
