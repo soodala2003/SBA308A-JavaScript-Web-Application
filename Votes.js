@@ -33,6 +33,7 @@ export async function voteImage(imgId, subId) {
 
                 if (voteData.value < 0) {
                     gridCell.classList.add("red");
+                    gridCell.style.backgroundColor = "rgb(233, 144, 212)";
                     
                 } else {
                     gridCell.classList.add("green");
