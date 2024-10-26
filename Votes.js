@@ -14,7 +14,7 @@ export async function voteImage(imgId, subId) {
     });
 
     resultsBtn.addEventListener("click", () => {
-        document.querySelector("d-flex flex-row").style.display = "none";
+        document.getElementById("main-div").style.display = "none";
         document.getElementById("vote-options").style.display = "block";
         //let results = 
         getVotesByUserId(subId).then((data) => {

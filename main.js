@@ -194,7 +194,7 @@ export async function voteDown(imgId, subId) {
 }
 
 // Request to get the votes by 'sub_id'(User)
-async function getVotesByUserId(subId) {
+export async function getVotesByUserId(subId) {
     const URL = `${API_URL}votes?sub_id=${subId}`;
     try {
         const response = await fetch(URL, {
@@ -208,7 +208,7 @@ async function getVotesByUserId(subId) {
         }
         const votes = await response.json();
         //console.log(votes); // array of voted 
-        console.log(votes[0].image_id);
+        console.log(votes[0].image);
         return votes;
     } catch (error) {
         console.log("Error fetching votes:", error);
