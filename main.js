@@ -116,8 +116,8 @@ getFavouritesBtn.addEventListener("click", function(e) {
     let clone = Carousel.createCarouselItem(imgSrc, imgAlt, imgId);
     Carousel.appendCarousel(clone); 
 
+    Votes.voteImage(imgId, subId);
     //voteImage(imgId, subId, vote);
-    //voteImage(imgId, subId);
     /* if (cloneDiv.firstElementChild === infoDump) {
         cloneDiv.insertBefore(clone, cloneDiv.firstElementChild);
         //console.log(cloneDiv); 
