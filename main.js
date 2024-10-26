@@ -134,8 +134,7 @@ getFavouritesBtn.addEventListener("click", function(e) {
     breedSelect.selectedIndex = -1;
 });
 
-async function voteImage(imgId, subId) {
-
+export async function voteUp(imgId, subId) {
     const URL = `${API_URL}votes/`;
     const body = {
         "image_id": imgId,
@@ -154,8 +153,9 @@ async function voteImage(imgId, subId) {
         if (!response.ok) {
             throw new Error("Failed to vote image");
         }
-        
-        return response.json();
+        // Update UI to reflect the voted state
+        console.log(response.json());
+        //return response.json();
     }).then(data => {
         alert(data.message);
         console.log(data)
@@ -163,14 +163,13 @@ async function voteImage(imgId, subId) {
         console.error('Error:', error);
     });
 }
-//export async function voteImage(imgId, subId, vote) {
-    
 
-    /* const URL = `${API_URL}votes/`;
+export async function voteDown(imgId, subId) {
+    const URL = `${API_URL}votes/`;
     const body = {
         "image_id": imgId, //selectedBreed.image.id
         "sub_id": subId,   //userId
-        "value": vote      
+        "value": -1      
     };
     
     fetch(URL, {
@@ -192,7 +191,7 @@ async function voteImage(imgId, subId) {
     }).catch(error => {
         console.error('Error:', error);
     });
-}  */
+}
 
 // Request to get the votes by 'sub_id'(User)
 async function getVotesByUserId(subId) {
@@ -222,7 +221,7 @@ getVotesByUserId(userId)
         console.error(error);
     });
 
-console.log(getVotesByUserId(userId));  //pending
+console.log(getVotesByUserId(userId)); 
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;
