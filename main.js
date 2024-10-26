@@ -133,7 +133,7 @@ getFavouritesBtn.addEventListener("click", function(e) {
     // Reset the select element
     breedSelect.selectedIndex = -1;
 });
-
+// "image_url": imgUrl,
 export async function voteUp(imgId, subId) {
     const URL = `${API_URL}votes/`;
     const body = {
@@ -207,21 +207,24 @@ async function getVotesByUserId(subId) {
             throw new Error(`Network response was not ok: ${response.status}`);
         }
         const votes = await response.json();
+        //console.log(votes); // array of voted 
+        console.log(votes[0].image_id);
         return votes;
     } catch (error) {
         console.log("Error fetching votes:", error);
     }
 }
 
-getVotesByUserId(userId)
-    .then(votes => {
+getVotesByUserId(userId);
+    /* .then(() => {
         // Process the retrieved votes
-        console.log(`Votes for user, ${userId}: ${votes}`);
+        console.log(`Votes for user, userId: ${userId}`);
+        console.log(response[0]);
     }).catch(error => {
         console.error(error);
-    });
+    }); */
 
-console.log(getVotesByUserId(userId)); 
+console.log(getVotesByUserId(userId)); //returns Promise
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;
