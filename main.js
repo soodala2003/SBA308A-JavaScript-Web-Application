@@ -90,8 +90,7 @@ getFavouritesBtn.addEventListener("click", function(e) {
     clear(element);
 
     document.getElementById("main-div").style.visibility = "visible";
-    //document.getElementById("grid").style.visibility = "hidden";
-
+    
     const selectedBreedId = breedSelect.value;
     const selectedBreedIndex = breedSelect.selectedIndex;
 
@@ -100,6 +99,7 @@ getFavouritesBtn.addEventListener("click", function(e) {
     console.log(selectedBreedId);
     
     h6.innerHTML = selectedBreed.name;
+    h6.appendChild(document.createElement("hr"));
     h6.appendChild(ul);
     li1.innerHTML = `<p>Description: ${selectedBreed.description}</p>`;
     li2.innerHTML = `<p>Temperament: ${selectedBreed.temperament}</p>`;
@@ -132,15 +132,6 @@ getFavouritesBtn.addEventListener("click", function(e) {
     Carousel.appendCarousel(clone); 
 
     Votes.voteImage(imgId, subId);
-    //voteImage(imgId, subId, vote);
-    /* if (cloneDiv.firstElementChild === infoDump) {
-        cloneDiv.insertBefore(clone, cloneDiv.firstElementChild);
-        //console.log(cloneDiv); 
-    } else {
-        cloneDiv.removeChild(cloneDiv.firstElementChild);
-        cloneDiv.insertBefore(clone, cloneDiv.firstElementChild);
-    }  */
-    
     
     //cloneParentDiv.insertBefore(clone, cloneParentDiv.firstChild);
     //carousel.insertBefore(clone, carousel.firstChild);
@@ -148,7 +139,7 @@ getFavouritesBtn.addEventListener("click", function(e) {
     // Reset the select element
     breedSelect.selectedIndex = -1;
 });
-// "image_url": imgUrl,
+
 export async function voteUp(imgId, subId) {
     const URL = `${API_URL}votes/`;
     const body = {
@@ -230,7 +221,7 @@ export async function getVotesByUserId(subId) {
     }
 }
 
-getVotesByUserId(userId);
+//getVotesByUserId(userId);
     /* .then(() => {
         // Process the retrieved votes
         console.log(`Votes for user, userId: ${userId}`);
@@ -239,7 +230,7 @@ getVotesByUserId(userId);
         console.error(error);
     }); */
 
-console.log(getVotesByUserId(userId)); //returns Promise
+//console.log(getVotesByUserId(userId)); //returns Promise
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;
