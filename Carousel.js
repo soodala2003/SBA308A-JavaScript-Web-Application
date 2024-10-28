@@ -1,4 +1,4 @@
-import { favourite } from "./main.js";
+import { favourite, clear } from "./main.js";
 
 export function createCarouselItem(imgSrc, imgAlt, imgId) {
     const template = document.querySelector("#carouselItemTemplate");
@@ -15,21 +15,22 @@ export function createCarouselItem(imgSrc, imgAlt, imgId) {
   
     return clone;
 }
-  
-export function clear() {
+
+/* export function clear() {
     const carousel = document.querySelector("#carouselInner");
     while (carousel.firstChild) {
         carousel.removeChild(carousel.firstChild);
     }
-}
-  
+} */
+
 export function appendCarousel(element) {
     const carousel = document.querySelector("#carouselInner");
    
     if (!carousel.firstElementChild) {
         carousel.appendChild(element);
     } else {
-        clear();
+        const elementId = "carouselInner";
+        clear(elementId);
         carousel.appendChild(element);
     }    
 }

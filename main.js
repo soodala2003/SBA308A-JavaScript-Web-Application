@@ -36,8 +36,6 @@ async function initialLoad() {
         const jsonData = await response.json();
         storedBreeds = jsonData;
         
-        //console.log(storedBreeds[0]);
-        
         for (let i = 0; i < storedBreeds.length; i++) {
             const breed = storedBreeds[i];
 
@@ -54,7 +52,7 @@ async function initialLoad() {
 
 initialLoad();
 
-function clear(elementId) {
+export function clear(elementId) {
     const element = document.getElementById(elementId);
     while (element.firstChild) {
         element.removeChild(element.firstChild);
@@ -74,7 +72,6 @@ getFavouritesBtn.addEventListener("click", function(e) {
 
     let selectedBreed = storedBreeds[selectedBreedIndex]; 
     console.log(selectedBreed.id);
-    //console.log(selectedBreedId);
     
     h6.innerHTML = selectedBreed.name;
     h6.appendChild(document.createElement("hr"));
@@ -124,8 +121,8 @@ export async function voteUp(imgId, subId) {
         // Update UI to reflect the voted state
         console.log(response.json());
     }).then(data => {
-        alert(`Vote Up: ${data.message}`);
-        console.log(data)
+        console.log(`Vote Up: ${data.message}`);
+        //return data;
     }).catch(error => {
         console.error('Error:', error);
     });
@@ -152,8 +149,8 @@ export async function voteDown(imgId, subId) {
         }
         return response.json();
     }).then(data => {
-        alert(`Vote Down: ${data.message}`);
-        console.log(data)
+        console.log(`Vote Down: ${data.message}`);
+        //return data;
     }).catch(error => {
         console.error('Error:', error);
     });
@@ -173,15 +170,12 @@ export async function getVotesByUserId(subId) {
             throw new Error(`Network response was not ok: ${response.status}`);
         }
         const votes = await response.json();
-        //console.log(votes);
         console.log(votes.length);
         return votes;
     } catch (error) {
         console.log("Error fetching votes:", error);
     }
 }
-
-console.log(getVotesByUserId(userId).length);
 
 export async function deleteVote(imgId, subId, id) {
     const URL = `${API_URL}votes/${id}`;
@@ -202,10 +196,9 @@ export async function deleteVote(imgId, subId, id) {
         if (!response.ok) {
             throw new Error("Failed to delete the image");
         }
-
         return response.json();
     }).then(data => {
-        alert(`Delete Vote: ${data.message}`);
+        console.log(`Delete Vote: ${data.message}`);
         return data;
     }).catch(error => {
         console.error('Error:', error);
