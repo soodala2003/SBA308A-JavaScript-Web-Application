@@ -5,9 +5,7 @@ const breedSelect = document.getElementById("breedSelect");
 const infoDump = document.getElementById("infoDump");
 const getFavouritesBtn = document.getElementById("getFavouritesBtn");
 const carousel = document.getElementById("carouselInner");
-//const parentEl = document.getElementById("carouselInner");
 const h6 = document.querySelector("h6");
-const cloneDiv = document.getElementById("clone-div");
 
 const ul = document.createElement("ul");
 const li1 = document.createElement("li");
@@ -38,11 +36,8 @@ async function initialLoad() {
         const jsonData = await response.json();
         storedBreeds = jsonData;
         
-        console.log(storedBreeds[0]);
-        /*
-        console.log(storedBreeds.length);
-        console.log(storedBreeds[0]);
-        return storedBreeds; */
+        //console.log(storedBreeds[0]);
+        
         for (let i = 0; i < storedBreeds.length; i++) {
             const breed = storedBreeds[i];
 
@@ -54,30 +49,13 @@ async function initialLoad() {
     } catch (errors) {
         console.log(errors);
     }   
-    //createCarousel();
-    // Reset the select element
     breedSelect.selectedIndex = -1;
 }
 
 initialLoad();
-//console.log(storedBreeds.length);
-
-// Create the initial carousel.
-function createCarousel() {
-    for (let i = 0; i < storedBreeds.length; i++) {
-        let breed = storedBreeds[i];
-        let carouselEl = document.createElement("div");
-      
-        carouselEl.setAttribute("id", `${breed.id}`);
-        //carouselEl.setAttribute("class", "carousel-item");
-        //carouselEl.textContent = `${breed.name}`;
-        carousel.appendChild(carouselEl);
-    }
-}
 
 function clear(elementId) {
     const element = document.getElementById(elementId);
-    //const grid = document.querySelector("#grid");
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
@@ -86,7 +64,7 @@ function clear(elementId) {
 getFavouritesBtn.addEventListener("click", function(e) {
     e.preventDefault();
 
-    const element = "grid";//document.getElementById("grid");
+    const element = "grid";
     clear(element);
 
     document.getElementById("main-div").style.visibility = "visible";
@@ -96,7 +74,7 @@ getFavouritesBtn.addEventListener("click", function(e) {
 
     let selectedBreed = storedBreeds[selectedBreedIndex]; 
     console.log(selectedBreed.id);
-    console.log(selectedBreedId);
+    //console.log(selectedBreedId);
     
     h6.innerHTML = selectedBreed.name;
     h6.appendChild(document.createElement("hr"));
@@ -105,23 +83,10 @@ getFavouritesBtn.addEventListener("click", function(e) {
     li2.innerHTML = `<p>Temperament: ${selectedBreed.temperament}</p>`;
     li3.innerHTML = `<p>Origin: ${selectedBreed.origin}</p>`;
     li4.innerHTML = `<p>Life Span: ${selectedBreed.life_span}</p>`;
-    li5.innerHTML = `<p>More Information: </p>`;//${selectedBreed.wikipedia_url}</p>`;
+    li5.innerHTML = `<p>More Information: </p>`;
     wikiLink.setAttribute("href", `${selectedBreed.wikipedia_url}`);
     wikiLink.textContent = `${selectedBreed.wikipedia_url}`;
     li5.appendChild(wikiLink);
-
-    //let selectedImg = document.createElement("div");
-    //selectedImg.setAttribute("id", selectedBreedId);
-
-    //carouselElement.setAttribute("class", "carousel-item active");
-    //Carousel.appendCarousel(carouselElement);
-    //let img = document.createElement("img");
-    //img.setAttribute("class", "d-block w-100 center");
-    //img.style.maxWidth = "50%";
-    //img.src = selectedBreed.image.url;
-    //img.alt = selectedBreed.name;
-    //selectedImg.appendChild(img); 
-    //console.log(cloneDiv.firstElementChild);
 
     let subId = userId;
     let imgId = selectedBreed.image.id;
@@ -133,9 +98,6 @@ getFavouritesBtn.addEventListener("click", function(e) {
 
     Votes.voteImage(imgId, subId);
     
-    //cloneParentDiv.insertBefore(clone, cloneParentDiv.firstChild);
-    //carousel.insertBefore(clone, carousel.firstChild);
-   
     // Reset the select element
     breedSelect.selectedIndex = -1;
 });
@@ -161,9 +123,8 @@ export async function voteUp(imgId, subId) {
         }
         // Update UI to reflect the voted state
         console.log(response.json());
-        //return response.json();
     }).then(data => {
-        alert(data.message);
+        alert(`Vote Up: ${data.message}`);
         console.log(data)
     }).catch(error => {
         console.error('Error:', error);
@@ -173,8 +134,8 @@ export async function voteUp(imgId, subId) {
 export async function voteDown(imgId, subId) {
     const URL = `${API_URL}votes/`;
     const body = {
-        "image_id": imgId, //selectedBreed.image.id
-        "sub_id": subId,   //userId
+        "image_id": imgId, 
+        "sub_id": subId,  
         "value": -1      
     };
     
@@ -189,10 +150,9 @@ export async function voteDown(imgId, subId) {
         if (!response.ok) {
             throw new Error("Failed to favorite image");
         }
-        // Update UI to reflect the favorited state
         return response.json();
     }).then(data => {
-        alert(data.message);
+        alert(`Vote Down: ${data.message}`);
         console.log(data)
     }).catch(error => {
         console.error('Error:', error);
@@ -213,24 +173,13 @@ export async function getVotesByUserId(subId) {
             throw new Error(`Network response was not ok: ${response.status}`);
         }
         const votes = await response.json();
-        //console.log(votes); // array of voted 
-        console.log(votes[0].image);
+        //console.log(votes);
+        //console.log(votes[0].id);
         return votes;
     } catch (error) {
         console.log("Error fetching votes:", error);
     }
 }
-
-//getVotesByUserId(userId);
-    /* .then(() => {
-        // Process the retrieved votes
-        console.log(`Votes for user, userId: ${userId}`);
-        console.log(response[0]);
-    }).catch(error => {
-        console.error(error);
-    }); */
-
-//console.log(getVotesByUserId(userId)); //returns Promise
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;
@@ -257,14 +206,3 @@ export async function favourite(imgId) {
     });
 }
     
-    /* axios.post(apiUrl, 
-        {headers: {"x-api-key": API_KEY}},
-        {data: {"image_id": imgId}}
-    ).then(response => {
-        console.log('Cat added to favorites:', response.data);
-    }).catch(error => {
-        console.error("Error:", error);
-    });   
-}
-
- */
