@@ -174,22 +174,25 @@ export async function getVotesByUserId(subId) {
         }
         const votes = await response.json();
         //console.log(votes);
-        //console.log(votes[0].id);
+        console.log(votes.length);
         return votes;
     } catch (error) {
         console.log("Error fetching votes:", error);
     }
 }
 
-export async function deleteVote(imgId, subId) {
-    const URL = `${API_URL}votes/`;
+console.log(getVotesByUserId(userId).length);
+
+export async function deleteVote(imgId, subId, id) {
+    const URL = `${API_URL}votes/${id}`;
     const body = {
         "image_id": imgId, 
-        "sub_id": subId,     
-    };
+        "sub_id": subId, 
+        "id": id   
+    }; 
     
     fetch(URL, {
-        method: "POST",
+        method: "DELETE",
         headers: {
             "Content-Type": "application/json",
             "x-api-key": API_KEY
@@ -199,15 +202,17 @@ export async function deleteVote(imgId, subId) {
         if (!response.ok) {
             throw new Error("Failed to delete the image");
         }
+
         return response.json();
     }).then(data => {
         alert(`Delete Vote: ${data.message}`);
-        data.pop();
+        return data;
     }).catch(error => {
         console.error('Error:', error);
     });
 }
 
+//console.log(deleteVote(userId));
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;

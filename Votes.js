@@ -1,9 +1,10 @@
-import { voteUp, voteDown, getVotesByUserId } from "./main.js";
+import { voteUp, voteDown, getVotesByUserId, deleteVote } from "./main.js";
 
 export async function voteImage(imgId, subId) {
     const upBtn = document.getElementById("voteUpBtn");
     const downBtn = document.getElementById("voteDownBtn"); 
-    const resultsBtn= document.getElementById("voteResultsBtn");
+    const resultsBtn = document.getElementById("voteResultsBtn");
+    const deleteBtn = document.getElementById("deleteVoteBtn");
     
     upBtn.addEventListener("click", () => {
         voteUp(imgId, subId);
@@ -16,6 +17,11 @@ export async function voteImage(imgId, subId) {
     resultsBtn.addEventListener("click", () => {
         document.getElementById("main-div").style.visibility = "hidden";
         document.getElementById("vote-options").style.display = "block";
+
+        const gridEl = document.getElementById("grid");
+        while (gridEl.firstChild) {
+            gridEl.removeChild(gridEl.firstChild);
+        }
         
         getVotesByUserId(subId).then((data) => {
             data.map(function(voteData) {
@@ -48,4 +54,12 @@ export async function voteImage(imgId, subId) {
             console.log(error);
         });
     });
-}
+
+    deleteBtn.addEventListener("click", () => {
+        getVotesByUserId(subId).then((data) => {
+            const index = data.length - 1;
+            const id = data[index].id;
+            deleteVote(imgId, subId, id);
+        });        
+    }); 
+} 
