@@ -119,7 +119,7 @@ export async function voteUp(imgId, subId) {
         body: JSON.stringify(body)
     }).then(response => {
         if (!response.ok) {
-            throw new Error("Failed to vote image");
+            throw new Error("Failed to vote the image");
         }
         // Update UI to reflect the voted state
         console.log(response.json());
@@ -148,7 +148,7 @@ export async function voteDown(imgId, subId) {
         body: JSON.stringify(body)
     }).then(response => {
         if (!response.ok) {
-            throw new Error("Failed to favorite image");
+            throw new Error("Failed to vote the image");
         }
         return response.json();
     }).then(data => {
@@ -180,6 +180,34 @@ export async function getVotesByUserId(subId) {
         console.log("Error fetching votes:", error);
     }
 }
+
+export async function deleteVote(imgId, subId) {
+    const URL = `${API_URL}votes/`;
+    const body = {
+        "image_id": imgId, 
+        "sub_id": subId,     
+    };
+    
+    fetch(URL, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "x-api-key": API_KEY
+        },
+        body: JSON.stringify(body)
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error("Failed to delete the image");
+        }
+        return response.json();
+    }).then(data => {
+        alert(`Delete Vote: ${data.message}`);
+        data.pop();
+    }).catch(error => {
+        console.error('Error:', error);
+    });
+}
+
 
 export async function favourite(imgId) { 
     const URL = `${API_URL}favourites/`;
